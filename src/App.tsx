@@ -174,7 +174,7 @@ export default function App() {
           {
             fps: 15,
             qrbox: (width, height) => {
-              const size = Math.min(width, height) * 0.7;
+              const size = Math.min(width, height) * 0.8;
               return { width: size, height: size };
             }
           },
@@ -951,8 +951,8 @@ export default function App() {
                 <div className="grid grid-cols-1 gap-3">
                   
                   {isScanning ? (
-                    <div className="relative border-2 border-dashed border-red-500 rounded-xl overflow-hidden bg-black p-4 flex flex-col items-center">
-                      <div id="qr-reader" className="w-full max-w-[280px] overflow-hidden rounded-lg aspect-square" />
+                    <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center">
+                      <div id="qr-reader" className="w-full max-w-[420px] overflow-hidden rounded-xl aspect-square shadow-2xl" />
                       <button
                         onClick={() => setIsScanning(false)}
                         className="mt-3 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-[9px] font-black uppercase rounded-lg tracking-wider"
