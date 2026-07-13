@@ -589,7 +589,7 @@ export default function App() {
                 <div className="h-1.5 w-12 bg-red-600 mt-2.5 mb-2"></div>
                 
                 <p className="text-xs text-gray-500 font-bold leading-tight italic uppercase tracking-wider">
-                  International Marathon<br/>Herbalife Cup 2026
+                  VnExpress Da Nang International Marathon<br/>Herbalife Cup 2026
                 </p>
               </div>
             </div>
@@ -783,7 +783,7 @@ export default function App() {
                           </div>
                           <div className="text-right">
                             <p className="text-gray-400 font-black">SỰ KIỆN</p>
-                            <p className="text-red-600 font-black text-xs sm:text-sm mt-0.5">VM HERBALIFE 2026</p>
+                            <p className="text-red-600 font-black text-[10px] sm:text-xs mt-0.5">VM DA NANG HERBALIFE 2026</p>
                           </div>
                         </div>
 
