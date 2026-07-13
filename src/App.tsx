@@ -174,7 +174,8 @@ export default function App() {
           {
             fps: 15,
             qrbox: (width, height) => {
-              const size = Math.min(width, height) * 0.8;
+              // Expand scanner target area to 90% of width to make capturing the QR code extremely quick & easy
+              const size = Math.min(width, height) * 0.9;
               return { width: size, height: size };
             }
           },
@@ -787,19 +788,22 @@ export default function App() {
                         </div>
 
                         {/* QR Code integration */}
-                        <div className="pt-4 pb-1 flex flex-col items-center justify-center border-t border-gray-100 mt-2">
-                          <div className="p-2 border-2 border-black rounded-xl bg-white shadow-sm">
+                        <div className="pt-5 pb-2 flex flex-col items-center justify-center border-t border-gray-100 mt-3">
+                          <div className="p-3 border-2 border-black rounded-2xl bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
                             <img 
-                              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://vm-minigame.vercel.app/admin?${successData.ticketId}`)}`}
+                              src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(`https://vm-minigame.vercel.app/admin?${successData.ticketId}`)}`}
                               alt="QR Code"
-                              className="w-32 h-32"
+                              className="w-52 h-52 sm:w-56 sm:h-56 transition-transform duration-300 hover:scale-[1.02]"
                               referrerPolicy="no-referrer"
                             />
                           </div>
-                          <p className="text-sm font-black text-black tracking-widest mt-2.5 uppercase italic">
+                          
+                          {/* Extreme-high visibility Ticket ID Stamp */}
+                          <div className="mt-4 px-6 py-2 bg-red-600 border-2 border-black rounded-xl shadow-md text-white font-black text-xl sm:text-2xl tracking-widest uppercase italic animate-pulse">
                             {successData.ticketId}
-                          </p>
-                          <p className="text-xs font-bold text-gray-400 uppercase mt-1 tracking-wider text-center leading-relaxed">
+                          </div>
+
+                          <p className="text-xs font-bold text-gray-400 uppercase mt-3 tracking-wider text-center leading-relaxed">
                             Đưa mã QR này cho Ban tổ chức<br/>để quét và nhận lượt quay thưởng!
                           </p>
                         </div>
@@ -962,8 +966,15 @@ export default function App() {
                   <div className="flex flex-col gap-3.5">
                     
                     {isScanning ? (
-                      <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center">
-                        <div id="qr-reader" className="w-full max-w-[420px] overflow-hidden rounded-xl aspect-square shadow-2xl" />
+                      <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center w-full">
+                        <div className="relative w-full max-w-[420px] aspect-square rounded-xl overflow-hidden shadow-2xl">
+                          <div id="qr-reader" className="w-full h-full" />
+                          {/* Animated laser line & targeting frame overlay */}
+                          <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-4 z-10">
+                            <div className="absolute inset-6 border-2 border-dashed border-red-500/40 rounded-2xl" />
+                            <div className="qr-laser-line" />
+                          </div>
+                        </div>
                         <button
                           onClick={() => setIsScanning(false)}
                           className="mt-3 px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white text-xs font-black uppercase rounded-xl tracking-wider active:scale-95 transition-all"

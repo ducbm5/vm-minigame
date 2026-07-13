@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+/* HTML5 QrCode Scanner Custom Overrides & Enhancements */
+#qr-reader {
+  border: none !important;
+  background: black !important;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0.75rem;
+}
+
+/* Premium dynamic laser alignment scanning effect */
+.qr-laser-line {
+  position: absolute;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background-color: #ef4444;
+  box-shadow: 0 0 12px #ef4444, 0 0 24px rgba(239, 68, 68, 0.8);
+  animation: laser-swipe 2s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes laser-swipe {
+  0% {
+    top: 15%;
+  }
+  50% {
+    top: 85%;
+  }
+  100% {
+    top: 15%;
+  }
+}
