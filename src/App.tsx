@@ -569,7 +569,7 @@ export default function App() {
             {/* Top Header / Branding Area with Bold italic typography */}
             <div className="relative pt-16 px-6 sm:px-8 pb-5 border-b border-gray-100 flex flex-col bg-white">
               <div className="text-left">
-                <p className="text-[10px] font-bold text-red-600 tracking-widest uppercase mb-1">
+                <p className="text-xs font-bold text-red-600 tracking-widest uppercase mb-1">
                   VnExpress Marathon 2026
                 </p>
                 <h1 className="text-3xl font-black leading-none text-black uppercase italic tracking-tighter">
@@ -577,7 +577,7 @@ export default function App() {
                 </h1>
                 <div className="h-1.5 w-12 bg-red-600 mt-2.5 mb-2"></div>
                 
-                <p className="text-[10px] text-gray-500 font-bold leading-tight italic uppercase tracking-wider">
+                <p className="text-xs text-gray-500 font-bold leading-tight italic uppercase tracking-wider">
                   International Marathon<br/>Herbalife Cup 2026
                 </p>
               </div>
@@ -597,9 +597,9 @@ export default function App() {
                     className="flex-1 flex flex-col justify-center"
                   >
                     <form onSubmit={handleSubmitRegistration} className="space-y-6">
-                      {/* Name field */}
-                      <div className="space-y-1.5">
-                        <label className="block text-[10px] font-black text-black uppercase tracking-widest">
+                       {/* Name field */}
+                       <div className="space-y-1.5">
+                        <label className="block text-xs font-black text-black uppercase tracking-widest">
                           Họ và tên <span className="text-red-600">*</span>
                         </label>
                         <div className="relative">
@@ -616,7 +616,7 @@ export default function App() {
                               setFormTouched(prev => ({ ...prev, name: true }));
                             }}
                             onBlur={() => setFormTouched(prev => ({ ...prev, name: true }))}
-                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-xs font-bold uppercase focus:outline-none transition-all placeholder:text-gray-300 text-black ${
+                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-base font-bold uppercase focus:outline-none transition-all placeholder:text-gray-300 text-black ${
                               formTouched.name && validateName(name)
                                 ? "border-red-500"
                                 : "border-black focus:border-red-600"
@@ -624,7 +624,7 @@ export default function App() {
                           />
                         </div>
                         {formTouched.name && validateName(name) && (
-                          <p className="text-[10px] text-red-600 font-bold uppercase tracking-wider mt-0.5">
+                          <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-0.5">
                             {validateName(name)}
                           </p>
                         )}
@@ -632,7 +632,7 @@ export default function App() {
 
                       {/* Phone field */}
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] font-black text-black uppercase tracking-widest">
+                        <label className="block text-xs font-black text-black uppercase tracking-widest">
                           Số điện thoại <span className="text-red-600">*</span>
                         </label>
                         <div className="relative">
@@ -649,7 +649,7 @@ export default function App() {
                               setFormTouched(prev => ({ ...prev, phone: true }));
                             }}
                             onBlur={() => setFormTouched(prev => ({ ...prev, phone: true }))}
-                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-xs font-bold focus:outline-none transition-all placeholder:text-gray-300 text-black ${
+                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-base font-bold focus:outline-none transition-all placeholder:text-gray-300 text-black ${
                               formTouched.phone && validatePhone(phone)
                                 ? "border-red-500"
                                 : "border-black focus:border-red-600"
@@ -657,7 +657,7 @@ export default function App() {
                           />
                         </div>
                         {formTouched.phone && validatePhone(phone) && (
-                          <p className="text-[10px] text-red-600 font-bold uppercase tracking-wider mt-0.5">
+                          <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-0.5">
                             {validatePhone(phone)}
                           </p>
                         )}
@@ -665,7 +665,7 @@ export default function App() {
 
                       {/* Error Notification */}
                       {errorMsg && (
-                        <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-700 text-[10px] rounded font-bold uppercase">
+                        <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-700 text-xs rounded font-bold uppercase">
                           <span>{errorMsg}</span>
                         </div>
                       )}
@@ -695,7 +695,7 @@ export default function App() {
                       </button>
                     </form>
 
-                    <div className="mt-8 text-center text-[9px] text-gray-400 uppercase leading-relaxed font-bold tracking-wider">
+                    <div className="mt-8 text-center text-xs text-gray-400 uppercase leading-relaxed font-bold tracking-wider">
                       Mỗi người được nhận 1 lượt chơi Minigame.
                     </div>
                   </motion.div>
@@ -710,10 +710,10 @@ export default function App() {
                     className="flex-1 flex flex-col justify-center py-2"
                   >
                     {isDuplicate ? (
-                      <div className="mb-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 text-[11px] flex items-start gap-2.5">
+                      <div className="mb-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 text-xs flex items-start gap-2.5">
                         <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
                         <div>
-                          <p className="font-black uppercase tracking-wider text-[9px]">SĐT NÀY ĐÃ ĐĂNG KÝ TRƯỚC ĐÓ!</p>
+                          <p className="font-black uppercase tracking-wider text-[10px]">SĐT NÀY ĐÃ ĐĂNG KÝ TRƯỚC ĐÓ!</p>
                           <p className="opacity-90 mt-0.5 leading-relaxed font-medium">
                             Hệ thống phát hiện SĐT đã tham gia. Dưới đây là thông tin vé đã ghi nhận:
                           </p>
@@ -727,7 +727,7 @@ export default function App() {
                         <h2 className="text-xl font-black text-black uppercase italic tracking-tighter">
                           THÀNH CÔNG!
                         </h2>
-                        <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">
                           Đã ghi nhận thông tin vào hệ thống
                         </p>
                       </div>
@@ -743,32 +743,32 @@ export default function App() {
                       <div className="p-4 border-b border-dashed border-gray-300 bg-slate-50 relative">
                         <div className="flex justify-between items-start mb-3">
                           <div>
-                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
                             <p className="text-base font-black text-black tracking-wider italic uppercase">{successData.ticketId}</p>
                           </div>
-                          <div className="px-2 py-0.5 bg-red-600 text-white text-[8px] font-black uppercase tracking-wider italic">
+                          <div className="px-2 py-0.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-wider italic">
                             VIP PASS
                           </div>
                         </div>
 
                         <div className="space-y-2">
                           <div>
-                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Họ và tên</p>
-                            <p className="text-xs font-bold text-black uppercase tracking-tight">{successData.name}</p>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Họ và tên</p>
+                            <p className="text-sm font-bold text-black uppercase tracking-tight">{successData.name}</p>
                           </div>
                           <div>
-                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Số điện thoại</p>
-                            <p className="text-xs font-mono font-bold text-black">{successData.phone}</p>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Số điện thoại</p>
+                            <p className="text-sm font-mono font-bold text-black">{successData.phone}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Lower Ticket portion */}
                       <div className="p-4 bg-white relative">
-                        <div className="flex justify-between items-center text-[8px] font-bold text-gray-500 mb-2 uppercase">
+                        <div className="flex justify-between items-center text-[10px] font-bold text-gray-500 mb-2 uppercase">
                           <div>
                             <p>THỜI GIAN</p>
-                            <p className="text-black font-extrabold font-mono text-[9px]">{successData.timestamp}</p>
+                            <p className="text-black font-extrabold font-mono text-[11px]">{successData.timestamp}</p>
                           </div>
                           <div className="text-right">
                             <p>SỰ KIỆN</p>
@@ -786,17 +786,17 @@ export default function App() {
                               referrerPolicy="no-referrer"
                             />
                           </div>
-                          <p className="text-[9px] font-black text-black tracking-widest mt-2 uppercase italic">
+                          <p className="text-xs font-black text-black tracking-widest mt-2 uppercase italic">
                             {successData.ticketId}
                           </p>
-                          <p className="text-[7px] font-bold text-gray-400 uppercase mt-0.5 tracking-wider text-center">
+                          <p className="text-[10px] font-bold text-gray-400 uppercase mt-0.5 tracking-wider text-center">
                             Đưa mã QR này cho Ban tổ chức<br/>để quét và nhận lượt quay thưởng!
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-3 p-3 bg-slate-50 border border-gray-200 text-center text-[10px] text-gray-600 leading-snug font-medium rounded-lg">
+                    <div className="mt-3 p-3 bg-slate-50 border border-gray-200 text-center text-xs text-gray-600 leading-snug font-medium rounded-lg">
                       📸 <b>Vui lòng chụp lại màn hình tấm vé này</b> để làm căn cứ nhận quà và đổi lượt chơi Minigame tại sự kiện!
                     </div>
 
@@ -806,7 +806,7 @@ export default function App() {
                         setSuccessData(null);
                         setIsDuplicate(false);
                       }}
-                      className="w-full mt-4 py-3 bg-black hover:bg-red-600 text-white font-black text-[10px] uppercase tracking-widest italic transition-colors cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full mt-4 py-3 bg-black hover:bg-red-600 text-white font-black text-xs uppercase tracking-widest italic transition-colors cursor-pointer flex items-center justify-center gap-1"
                     >
                       <RefreshCw className="w-3 h-3" />
                       <span>ĐĂNG KÝ LƯỢT CHƠI MỚI</span>
@@ -835,14 +835,14 @@ export default function App() {
                     <h3 className="text-sm font-black tracking-tight uppercase italic text-white">
                       XÁC MINH BAN TỔ CHỨC
                     </h3>
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
+                    <p className="text-xs text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
                       Vui lòng nhập mật khẩu để truy cập trang quản trị
                     </p>
                   </div>
 
                   <form onSubmit={handleVerifyPasscode} className="space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-black tracking-widest text-slate-400 uppercase">
+                      <label className="text-xs font-black tracking-widest text-slate-400 uppercase">
                         MẬT KHẨU TRUY CẬP
                       </label>
                       <input
@@ -855,13 +855,13 @@ export default function App() {
                           setAdminPasscode(e.target.value.replace(/\D/g, ""));
                           setPasscodeError("");
                         }}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs font-bold text-white tracking-widest placeholder:text-slate-700 focus:outline-none focus:border-red-500 transition-colors text-center"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-base font-bold text-white tracking-widest placeholder:text-slate-700 focus:outline-none focus:border-red-500 transition-colors text-center"
                         autoFocus
                       />
                     </div>
 
                     {passcodeError && (
-                      <div className="text-[10px] text-red-400 font-bold text-center bg-red-950/30 border border-red-900/50 py-2.5 px-3 rounded-lg">
+                      <div className="text-xs text-red-400 font-bold text-center bg-red-950/30 border border-red-900/50 py-2.5 px-3 rounded-lg">
                         {passcodeError}
                       </div>
                     )}
@@ -881,7 +881,7 @@ export default function App() {
                         setCurrentView("user");
                         window.history.pushState({}, "", "/");
                       }}
-                      className="text-[9px] font-black tracking-widest text-slate-500 hover:text-slate-300 uppercase transition-colors"
+                      className="text-xs font-black tracking-widest text-slate-500 hover:text-slate-300 uppercase transition-colors"
                     >
                       Quay lại trang khách hàng
                     </button>
@@ -895,12 +895,12 @@ export default function App() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
-                      <span className="text-[10px] font-black text-red-500 tracking-widest uppercase italic">
+                      <span className="text-xs font-black text-red-500 tracking-widest uppercase italic">
                         BAN TỔ CHỨC
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[8px] bg-slate-800 text-slate-300 font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+                      <span className="text-[10px] bg-slate-800 text-slate-300 font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
                         Mã sự kiện: VM-2026
                       </span>
                       <button
@@ -919,20 +919,20 @@ export default function App() {
                   <h2 className="text-xl font-black text-white tracking-tight uppercase italic leading-none mt-1">
                     MINIGAME CHECK-IN
                   </h2>
-                  <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
                     Quét mã QR và xác nhận quà tặng của vận động viên
                   </p>
                 </div>
 
                 {/* Step Progress Bar */}
-                <div className="px-6 py-3.5 bg-slate-950 border-b border-slate-900 flex items-center justify-center gap-5 text-[9px] font-black">
+                <div className="px-6 py-3.5 bg-slate-950 border-b border-slate-900 flex items-center justify-center gap-5 text-xs font-black">
                   <div className={`flex items-center gap-1.5 ${!scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
-                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px] ${!scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>1</span>
+                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-xs ${!scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>1</span>
                     <span className="uppercase tracking-widest">NHẬP / QUÉT VÉ</span>
                   </div>
                   <div className="w-6 h-[1px] bg-slate-800" />
                   <div className={`flex items-center gap-1.5 ${scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
-                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px] ${scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>2</span>
+                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-xs ${scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>2</span>
                     <span className="uppercase tracking-widest">CẬP NHẬT KẾT QUẢ</span>
                   </div>
                 </div>
@@ -943,73 +943,73 @@ export default function App() {
               {/* QR Scanner Controls & Search Input */}
               {!scannedTicket && (
                 <div className="space-y-3">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  1. TIẾP NHẬN THÔNG TIN VÉ
-                </p>
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
+                    1. TIẾP NHẬN THÔNG TIN VÉ
+                  </p>
 
-                {/* Inline Camera stream or manual search option */}
-                <div className="grid grid-cols-1 gap-3">
-                  
-                  {isScanning ? (
-                    <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center">
-                      <div id="qr-reader" className="w-full max-w-[420px] overflow-hidden rounded-xl aspect-square shadow-2xl" />
+                  {/* Inline Camera stream or manual search option */}
+                  <div className="grid grid-cols-1 gap-3">
+                    
+                    {isScanning ? (
+                      <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center">
+                        <div id="qr-reader" className="w-full max-w-[420px] overflow-hidden rounded-xl aspect-square shadow-2xl" />
+                        <button
+                          onClick={() => setIsScanning(false)}
+                          className="mt-3 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-black uppercase rounded-lg tracking-wider"
+                        >
+                          HỦY QUÉT CAMERA
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={() => setIsScanning(false)}
-                        className="mt-3 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-[9px] font-black uppercase rounded-lg tracking-wider"
+                        onClick={() => setIsScanning(true)}
+                        className="w-full py-4 bg-red-600 hover:bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest italic transition-colors flex items-center justify-center gap-2 shadow-lg"
                       >
-                        HỦY QUÉT CAMERA
+                        <Camera className="w-4 h-4 animate-bounce" />
+                        MỞ CAMERA QUÉT MÃ QR VÉ
+                      </button>
+                    )}
+
+                    {scannerError && (
+                      <div className="p-3 bg-red-950/40 border border-red-800 rounded-lg text-red-300 text-xs font-medium leading-relaxed">
+                        {scannerError}
+                      </div>
+                    )}
+
+                    {/* Manual input lookup */}
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Mã vé (VD: VM26-ABCDE)"
+                        value={searchTicketId}
+                        onChange={(e) => setSearchTicketId(e.target.value.toUpperCase())}
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl py-3.5 pl-4 pr-12 text-base font-bold uppercase tracking-widest text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500 transition-colors"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") handleLookupTicket(searchTicketId);
+                        }}
+                      />
+                      <button
+                        onClick={() => handleLookupTicket(searchTicketId)}
+                        disabled={adminLoading}
+                        className="absolute inset-y-1.5 right-1.5 px-3 bg-slate-800 hover:bg-red-600 disabled:bg-slate-900 rounded-lg text-white font-bold text-xs transition-colors cursor-pointer"
+                      >
+                        {adminLoading ? (
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Search className="w-3.5 h-3.5" />
+                        )}
                       </button>
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => setIsScanning(true)}
-                      className="w-full py-4 bg-red-600 hover:bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest italic transition-colors flex items-center justify-center gap-2 shadow-lg"
-                    >
-                      <Camera className="w-4 h-4 animate-bounce" />
-                      MỞ CAMERA QUÉT MÃ QR VÉ
-                    </button>
-                  )}
 
-                  {scannerError && (
-                    <div className="p-3 bg-red-950/40 border border-red-800 rounded-lg text-red-300 text-[10px] font-medium leading-relaxed">
-                      {scannerError}
-                    </div>
-                  )}
-
-                  {/* Manual input lookup */}
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Nhập mã vé hoặc tìm thủ công (VD: VM26-ABCDE)"
-                      value={searchTicketId}
-                      onChange={(e) => setSearchTicketId(e.target.value.toUpperCase())}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl py-3.5 pl-4 pr-12 text-xs font-bold uppercase tracking-widest text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500 transition-colors"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") handleLookupTicket(searchTicketId);
-                      }}
-                    />
-                    <button
-                      onClick={() => handleLookupTicket(searchTicketId)}
-                      disabled={adminLoading}
-                      className="absolute inset-y-1.5 right-1.5 px-3 bg-slate-800 hover:bg-red-600 disabled:bg-slate-900 rounded-lg text-white font-bold text-xs transition-colors cursor-pointer"
-                    >
-                      {adminLoading ? (
-                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      ) : (
-                        <Search className="w-3.5 h-3.5" />
-                      )}
-                    </button>
                   </div>
-
                 </div>
-              </div>
               )}
 
               {/* Loader */}
               {adminLoading && (
                 <div className="py-12 text-center flex flex-col items-center justify-center gap-3">
                   <RefreshCw className="w-8 h-8 text-red-500 animate-spin" />
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
                     Đang tìm dữ liệu từ Google Sheets...
                   </p>
                 </div>
@@ -1020,7 +1020,7 @@ export default function App() {
                 <div className="p-4 bg-red-950/30 border border-red-800/40 rounded-xl text-red-300 text-xs flex items-start gap-2.5">
                   <XCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
                   <div>
-                    <p className="font-bold uppercase tracking-wider text-[10px]">LỖI TÌM KIẾM</p>
+                    <p className="font-bold uppercase tracking-wider text-xs">LỖI TÌM KIẾM</p>
                     <p className="opacity-90 mt-0.5 leading-relaxed">{adminError}</p>
                   </div>
                 </div>
@@ -1036,41 +1036,41 @@ export default function App() {
                     {/* Glowing status stamp on card */}
                     <div className="absolute top-4 right-4">
                       {scannedTicket.game1 === "Đã chơi" || scannedTicket.game2 === "Đã chơi" || scannedTicket.game3 === "Đã chơi" || scannedTicket.game4 === "Đã chơi" ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 text-[9px] font-black uppercase tracking-wider border border-emerald-800">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 text-[10px] font-black uppercase tracking-wider border border-emerald-800">
                           ĐÃ CHƠI
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-950 text-amber-400 text-[9px] font-black uppercase tracking-wider border border-amber-800 animate-pulse">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-950 text-amber-400 text-[10px] font-black uppercase tracking-wider border border-amber-800 animate-pulse">
                           CHƯA CHƠI
                         </span>
                       )}
                     </div>
 
                     <div>
-                      <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
                       <p className="text-lg font-black text-white italic tracking-wider uppercase">{scannedTicket.ticketId}</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 pt-1 border-t border-slate-900">
                       <div>
-                        <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">HỌ VÀ TÊN VĐV</p>
-                        <p className="text-xs font-bold text-white uppercase mt-0.5">{scannedTicket.name}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">HỌ VÀ TÊN VĐV</p>
+                        <p className="text-sm font-bold text-white uppercase mt-0.5">{scannedTicket.name}</p>
                       </div>
                       <div>
-                        <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">SỐ ĐIỆN THOẠI</p>
-                        <p className="text-xs font-mono font-bold text-slate-300 mt-0.5">{scannedTicket.phone}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">SỐ ĐIỆN THOẠI</p>
+                        <p className="text-sm font-mono font-bold text-slate-300 mt-0.5">{scannedTicket.phone}</p>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-900 flex justify-between items-start text-[8px] text-slate-400 font-bold uppercase tracking-wider gap-2">
+                    <div className="pt-2 border-t border-slate-900 flex justify-between items-start text-[10px] text-slate-400 font-bold uppercase tracking-wider gap-2">
                       <div>
-                        <p className="text-slate-500 text-[7px]">ĐĂNG KÝ LÚC</p>
+                        <p className="text-slate-500 text-[9px]">ĐĂNG KÝ LÚC</p>
                         <p className="text-slate-300 font-mono mt-0.5">{scannedTicket.timestamp}</p>
                       </div>
                       {(scannedTicket.gift1 || scannedTicket.gift2) && (
                         <div className="text-right max-w-[60%]">
-                          <p className="text-red-500 text-[7px]">QUÀ ĐÃ NHẬN</p>
-                          <p className="text-emerald-400 font-extrabold mt-0.5 leading-tight">
+                          <p className="text-red-500 text-[9px]">QUÀ ĐÃ NHẬN</p>
+                          <p className="text-emerald-400 font-extrabold mt-0.5 leading-tight text-xs">
                             {scannedTicket.gift1 && <span>{scannedTicket.gift1}</span>}
                             {scannedTicket.gift1 && scannedTicket.gift2 && <span> + </span>}
                             {scannedTicket.gift2 && <span>{scannedTicket.gift2}</span>}
@@ -1086,10 +1086,10 @@ export default function App() {
                     {/* Part 1: Game Checkboxes */}
                     <div className="space-y-3">
                       <div className="text-left pb-1 border-b border-slate-900">
-                        <p className="text-[9px] font-black text-red-500 uppercase tracking-widest italic">
+                        <p className="text-[11px] font-black text-red-500 uppercase tracking-widest italic">
                           2. THEO DÕI TRẠNG THÁI CHƠI GAME
                         </p>
-                        <p className="text-[10px] text-slate-400 font-bold mt-0.5">
+                        <p className="text-xs text-slate-400 font-bold mt-0.5">
                           Tích chọn các game vận động viên đã hoàn thành
                         </p>
                       </div>
@@ -1115,9 +1115,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GAME_1</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">Bắt gậy</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_1</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Bắt gậy</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGame1 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
                             </p>
                           </div>
@@ -1143,9 +1143,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GAME_2</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">Sàng bóng xuống lỗ</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_2</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Sàng bóng xuống lỗ</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGame2 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
                             </p>
                           </div>
@@ -1171,9 +1171,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GAME_3</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">PickleBall</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_3</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">PickleBall</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGame3 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
                             </p>
                           </div>
@@ -1199,9 +1199,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GAME_4</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">Vòng tròn về đích</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_4</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Vòng tròn về đích</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGame4 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
                             </p>
                           </div>
@@ -1212,10 +1212,10 @@ export default function App() {
                     {/* Part 2: Gift checkboxes */}
                     <div className="space-y-4 pt-1 border-t border-slate-900">
                       <div className="text-left">
-                        <p className="text-[9px] font-black text-red-500 uppercase tracking-widest italic">
+                        <p className="text-[11px] font-black text-red-500 uppercase tracking-widest italic">
                           3. QUÀ TẶNG THỂ THAO ĐÃ TRAO
                         </p>
-                        <p className="text-[10px] text-slate-400 font-bold mt-0.5">
+                        <p className="text-xs text-slate-400 font-bold mt-0.5">
                           Tích chọn các món quà đã trao cho vận động viên
                         </p>
                       </div>
@@ -1241,9 +1241,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GIFT_1</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">Gang tay</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GIFT_1</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Gang tay</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGift1 ? "✓ Đã trao" : "○ Chưa trao"}
                             </p>
                           </div>
@@ -1269,9 +1269,9 @@ export default function App() {
                             className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
                           />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-wider text-red-500">GIFT_2</p>
-                            <p className="text-[11px] font-extrabold text-white mt-0.5 leading-tight">Khăn ống</p>
-                            <p className="text-[8px] font-medium opacity-60 mt-0.5">
+                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GIFT_2</p>
+                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Khăn ống</p>
+                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
                               {adminGift2 ? "✓ Đã trao" : "○ Chưa trao"}
                             </p>
                           </div>
@@ -1283,7 +1283,7 @@ export default function App() {
                     <div className="pt-2 border-t border-slate-900">
                       {syncSuccess ? (
                         <div className="space-y-3">
-                          <p className="text-[9px] text-emerald-400 font-black text-center uppercase tracking-wider animate-bounce">
+                          <p className="text-xs text-emerald-400 font-black text-center uppercase tracking-wider animate-bounce">
                             🎉 Cập nhật kết quả thành công!
                           </p>
                           <button
@@ -1330,7 +1330,7 @@ export default function App() {
                               setIsScanning(false);
                             }}
                             disabled={syncingAdmin}
-                            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-slate-400 font-bold text-[10px] uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 border border-slate-800/80"
+                            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 border border-slate-800/80"
                           >
                             <XCircle className="w-3.5 h-3.5" />
                             <span>HỦY & CHỌN NGƯỜI KHÁC</span>
