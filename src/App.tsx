@@ -924,11 +924,25 @@ export default function App() {
                   </p>
                 </div>
 
+                {/* Step Progress Bar */}
+                <div className="px-6 py-3.5 bg-slate-950 border-b border-slate-900 flex items-center justify-center gap-5 text-[9px] font-black">
+                  <div className={`flex items-center gap-1.5 ${!scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
+                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px] ${!scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>1</span>
+                    <span className="uppercase tracking-widest">NHẬP / QUÉT VÉ</span>
+                  </div>
+                  <div className="w-6 h-[1px] bg-slate-800" />
+                  <div className={`flex items-center gap-1.5 ${scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
+                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px] ${scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>2</span>
+                    <span className="uppercase tracking-widest">CẬP NHẬT KẾT QUẢ</span>
+                  </div>
+                </div>
+
             {/* Admin Body Area */}
             <div className="flex-1 p-5 sm:p-6 space-y-6">
               
               {/* QR Scanner Controls & Search Input */}
-              <div className="space-y-3">
+              {!scannedTicket && (
+                <div className="space-y-3">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   1. TIẾP NHẬN THÔNG TIN VÉ
                 </p>
@@ -989,6 +1003,7 @@ export default function App() {
 
                 </div>
               </div>
+              )}
 
               {/* Loader */}
               {adminLoading && (
@@ -1266,35 +1281,61 @@ export default function App() {
 
                     {/* Part 3: Synchronize Submit Button */}
                     <div className="pt-2 border-t border-slate-900">
-                      <button
-                        onClick={handleSubmitAdmin}
-                        disabled={syncingAdmin}
-                        id="btn-admin-submit"
-                        className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-black text-xs uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-red-950/20"
-                      >
-                        {syncingAdmin ? (
-                          <>
-                            <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>ĐANG CẬP NHẬT...</span>
-                          </>
-                        ) : syncSuccess ? (
-                          <>
-                            <Check className="w-4 h-4" />
-                            <span>CẬP NHẬT THÀNH CÔNG!</span>
-                          </>
-                        ) : (
-                          <>
-                            <CheckSquare className="w-4 h-4" />
-                            <span>CẬP NHẬT KẾT QUẢ</span>
-                          </>
-                        )}
-                      </button>
+                      {syncSuccess ? (
+                        <div className="space-y-3">
+                          <p className="text-[9px] text-emerald-400 font-black text-center uppercase tracking-wider animate-bounce">
+                            🎉 Cập nhật kết quả thành công!
+                          </p>
+                          <button
+                            onClick={() => {
+                              setScannedTicket(null);
+                              setSearchTicketId("");
+                              setSyncSuccess(false);
+                              setAdminError(null);
+                              setIsScanning(false);
+                            }}
+                            className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-emerald-950/20"
+                          >
+                            <QrCode className="w-4 h-4" />
+                            <span>QUÉT NGƯỜI TIẾP THEO</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2.5">
+                          <button
+                            onClick={handleSubmitAdmin}
+                            disabled={syncingAdmin}
+                            id="btn-admin-submit"
+                            className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-black text-xs uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-red-950/20"
+                          >
+                            {syncingAdmin ? (
+                              <>
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                <span>ĐANG CẬP NHẬT...</span>
+                              </>
+                            ) : (
+                              <>
+                                <CheckSquare className="w-4 h-4" />
+                                <span>CẬP NHẬT KẾT QUẢ</span>
+                              </>
+                            )}
+                          </button>
 
-                      {/* Success Hint */}
-                      {syncSuccess && (
-                        <p className="text-[9px] text-emerald-400 font-black text-center mt-2.5 uppercase tracking-wider animate-bounce">
-                          🎉 Cập nhật kết quả thành công!
-                        </p>
+                          <button
+                            onClick={() => {
+                              setScannedTicket(null);
+                              setSearchTicketId("");
+                              setSyncSuccess(false);
+                              setAdminError(null);
+                              setIsScanning(false);
+                            }}
+                            disabled={syncingAdmin}
+                            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-slate-400 font-bold text-[10px] uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 border border-slate-800/80"
+                          >
+                            <XCircle className="w-3.5 h-3.5" />
+                            <span>HỦY & CHỌN NGƯỜI KHÁC</span>
+                          </button>
+                        </div>
                       )}
                     </div>
 
