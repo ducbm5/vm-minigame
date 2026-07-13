@@ -567,12 +567,22 @@ export default function App() {
         {currentView === "user" && (
           <>
             {/* Top Header / Branding Area with Bold italic typography */}
-            <div className="relative pt-16 px-6 sm:px-8 pb-5 border-b border-gray-100 flex flex-col bg-white">
+            <div className="relative pt-10 px-6 sm:px-8 pb-5 border-b border-gray-100 flex flex-col bg-white">
+              <button
+                onClick={() => {
+                  setCurrentView("admin");
+                  window.history.pushState({}, "", "/admin");
+                }}
+                className="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-600 transition-colors rounded-lg flex items-center justify-center w-11 h-11 active:scale-90"
+                title="Ban Tổ Chức"
+              >
+                <Lock className="w-4 h-4" />
+              </button>
               <div className="text-left">
                 <p className="text-xs font-bold text-red-600 tracking-widest uppercase mb-1">
                   VnExpress Marathon 2026
                 </p>
-                <h1 className="text-3xl font-black leading-none text-black uppercase italic tracking-tighter">
+                <h1 className="text-2xl sm:text-3xl font-black leading-none text-black uppercase italic tracking-tighter">
                   MINIGAME<br/>REGISTRATION
                 </h1>
                 <div className="h-1.5 w-12 bg-red-600 mt-2.5 mb-2"></div>
@@ -584,7 +594,7 @@ export default function App() {
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 px-6 sm:px-8 py-8 flex flex-col justify-center bg-white">
+            <div className="flex-1 px-6 sm:px-8 py-6 flex flex-col justify-center bg-white">
               <AnimatePresence mode="wait">
                 {!successData ? (
                   /* REGISTRATION FORM VIEW */
@@ -596,15 +606,15 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="flex-1 flex flex-col justify-center"
                   >
-                    <form onSubmit={handleSubmitRegistration} className="space-y-6">
+                    <form onSubmit={handleSubmitRegistration} className="space-y-5">
                        {/* Name field */}
                        <div className="space-y-1.5">
                         <label className="block text-xs font-black text-black uppercase tracking-widest">
                           Họ và tên <span className="text-red-600">*</span>
                         </label>
                         <div className="relative">
-                          <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none text-black">
-                            <User className="w-4 h-4" />
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <User className="w-5 h-5" />
                           </div>
                           <input
                             id="user-name-input"
@@ -616,10 +626,10 @@ export default function App() {
                               setFormTouched(prev => ({ ...prev, name: true }));
                             }}
                             onBlur={() => setFormTouched(prev => ({ ...prev, name: true }))}
-                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-base font-bold uppercase focus:outline-none transition-all placeholder:text-gray-300 text-black ${
+                            className={`w-full bg-slate-50 border-2 rounded-xl py-3.5 pl-11 pr-4 text-base font-bold uppercase focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-600 transition-all placeholder:text-gray-300 text-black ${
                               formTouched.name && validateName(name)
-                                ? "border-red-500"
-                                : "border-black focus:border-red-600"
+                                ? "border-red-500 focus:border-red-500"
+                                : "border-gray-200 focus:border-red-600"
                             }`}
                           />
                         </div>
@@ -636,8 +646,8 @@ export default function App() {
                           Số điện thoại <span className="text-red-600">*</span>
                         </label>
                         <div className="relative">
-                          <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none text-black">
-                            <Phone className="w-4 h-4" />
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <Phone className="w-5 h-5" />
                           </div>
                           <input
                             id="user-phone-input"
@@ -649,10 +659,10 @@ export default function App() {
                               setFormTouched(prev => ({ ...prev, phone: true }));
                             }}
                             onBlur={() => setFormTouched(prev => ({ ...prev, phone: true }))}
-                            className={`w-full bg-transparent border-b-2 py-2 pl-7 pr-2 text-base font-bold focus:outline-none transition-all placeholder:text-gray-300 text-black ${
+                            className={`w-full bg-slate-50 border-2 rounded-xl py-3.5 pl-11 pr-4 text-base font-bold focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-600 transition-all placeholder:text-gray-300 text-black ${
                               formTouched.phone && validatePhone(phone)
-                                ? "border-red-500"
-                                : "border-black focus:border-red-600"
+                                ? "border-red-500 focus:border-red-500"
+                                : "border-gray-200 focus:border-red-600"
                             }`}
                           />
                         </div>
@@ -665,7 +675,7 @@ export default function App() {
 
                       {/* Error Notification */}
                       {errorMsg && (
-                        <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-700 text-xs rounded font-bold uppercase">
+                        <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-700 text-xs rounded-xl font-bold uppercase">
                           <span>{errorMsg}</span>
                         </div>
                       )}
@@ -675,21 +685,21 @@ export default function App() {
                         id="submit-register-btn"
                         type="submit"
                         disabled={isLoading}
-                        className={`w-full py-4 text-white font-black text-xs uppercase italic transition-colors tracking-widest flex items-center justify-center gap-2 mt-4 cursor-pointer ${
+                        className={`w-full py-4 text-white font-black text-sm uppercase italic transition-all tracking-widest flex items-center justify-center gap-2 mt-4 rounded-xl cursor-pointer active:scale-[0.98] ${
                           isFormValid && !isLoading
-                            ? "bg-black hover:bg-red-600"
-                            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            ? "bg-black hover:bg-red-600 shadow-md shadow-red-600/10"
+                            : "bg-gray-100 text-gray-400 cursor-not-allowed"
                         }`}
                       >
                         {isLoading ? (
                           <>
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            <RefreshCw className="w-4 h-4 animate-spin" />
                             <span>ĐANG ĐĂNG KÝ THAM GIA...</span>
                           </>
                         ) : (
                           <>
                             <span>ĐĂNG KÝ THAM GIA</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
+                            <ChevronRight className="w-4 h-4" />
                           </>
                         )}
                       </button>
@@ -710,93 +720,93 @@ export default function App() {
                     className="flex-1 flex flex-col justify-center py-2"
                   >
                     {isDuplicate ? (
-                      <div className="mb-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 text-xs flex items-start gap-2.5">
-                        <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+                      <div className="mb-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 text-xs sm:text-sm flex items-start gap-2.5">
+                        <AlertTriangle className="w-5 h-5 shrink-0 text-amber-600 mt-0.5" />
                         <div>
-                          <p className="font-black uppercase tracking-wider text-[10px]">SĐT NÀY ĐÃ ĐĂNG KÝ TRƯỚC ĐÓ!</p>
-                          <p className="opacity-90 mt-0.5 leading-relaxed font-medium">
+                          <p className="font-black uppercase tracking-wider text-xs">SĐT NÀY ĐÃ ĐĂNG KÝ TRƯỚC ĐÓ!</p>
+                          <p className="opacity-90 mt-1 leading-relaxed font-semibold">
                             Hệ thống phát hiện SĐT đã tham gia. Dưới đây là thông tin vé đã ghi nhận:
                           </p>
                         </div>
                       </div>
                     ) : (
                       <div className="text-center mb-4">
-                        <div className="inline-flex p-2.5 rounded-full bg-red-100 text-red-600 mb-2">
-                          <CheckCircle2 className="w-6 h-6 animate-pulse" />
+                        <div className="inline-flex p-3 rounded-full bg-red-100 text-red-600 mb-2">
+                          <CheckCircle2 className="w-7 h-7 animate-pulse" />
                         </div>
-                        <h2 className="text-xl font-black text-black uppercase italic tracking-tighter">
-                          THÀNH CÔNG!
+                        <h2 className="text-xl sm:text-2xl font-black text-black uppercase italic tracking-tighter">
+                          ĐĂNG KÝ THÀNH CÔNG!
                         </h2>
-                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">
+                        <p className="text-xs sm:text-sm text-gray-500 font-bold uppercase tracking-wider">
                           Đã ghi nhận thông tin vào hệ thống
                         </p>
                       </div>
                     )}
 
                     {/* High-contrast Ticket Container */}
-                    <div className="bg-white border-2 border-black rounded-2xl overflow-hidden relative shadow-md my-1">
+                    <div className="bg-white border-2 border-black rounded-2xl overflow-hidden relative shadow-md my-2">
                       {/* Left and Right Ticket punch-outs */}
-                      <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-gray-100 border border-black z-10" />
-                      <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-gray-100 border border-black z-10" />
+                      <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-50 border border-black z-10" />
+                      <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-50 border border-black z-10" />
 
                       {/* Upper Ticket portion */}
-                      <div className="p-4 border-b border-dashed border-gray-300 bg-slate-50 relative">
+                      <div className="p-5 border-b border-dashed border-gray-300 bg-slate-50 relative">
                         <div className="flex justify-between items-start mb-3">
                           <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
-                            <p className="text-base font-black text-black tracking-wider italic uppercase">{successData.ticketId}</p>
+                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">MÃ LƯỢT CHƠI</p>
+                            <p className="text-xl font-black text-black tracking-widest italic uppercase">{successData.ticketId}</p>
                           </div>
-                          <div className="px-2 py-0.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-wider italic">
+                          <div className="px-3 py-1 bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider italic rounded">
                             VIP PASS
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2.5">
                           <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Họ và tên</p>
-                            <p className="text-sm font-bold text-black uppercase tracking-tight">{successData.name}</p>
+                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Họ và tên</p>
+                            <p className="text-base font-black text-black uppercase tracking-tight">{successData.name}</p>
                           </div>
                           <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Số điện thoại</p>
-                            <p className="text-sm font-mono font-bold text-black">{successData.phone}</p>
+                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Số điện thoại</p>
+                            <p className="text-base font-mono font-bold text-black">{successData.phone}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Lower Ticket portion */}
-                      <div className="p-4 bg-white relative">
-                        <div className="flex justify-between items-center text-[10px] font-bold text-gray-500 mb-2 uppercase">
+                      <div className="p-5 bg-white relative">
+                        <div className="flex justify-between items-center text-[11px] font-bold text-gray-500 mb-3 uppercase gap-2">
                           <div>
-                            <p>THỜI GIAN</p>
-                            <p className="text-black font-extrabold font-mono text-[11px]">{successData.timestamp}</p>
+                            <p className="text-gray-400 font-black">THỜI GIAN ĐĂNG KÝ</p>
+                            <p className="text-black font-extrabold font-mono text-xs sm:text-sm mt-0.5">{successData.timestamp}</p>
                           </div>
                           <div className="text-right">
-                            <p>SỰ KIỆN</p>
-                            <p className="text-red-600 font-extrabold">VM HERBALIFE 2026</p>
+                            <p className="text-gray-400 font-black">SỰ KIỆN</p>
+                            <p className="text-red-600 font-black text-xs sm:text-sm mt-0.5">VM HERBALIFE 2026</p>
                           </div>
                         </div>
 
                         {/* QR Code integration */}
-                        <div className="pt-3 pb-1 flex flex-col items-center justify-center border-t border-gray-100 mt-2">
-                          <div className="p-1.5 border-2 border-black rounded-lg bg-white">
+                        <div className="pt-4 pb-1 flex flex-col items-center justify-center border-t border-gray-100 mt-2">
+                          <div className="p-2 border-2 border-black rounded-xl bg-white shadow-sm">
                             <img 
                               src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://vm-minigame.vercel.app/admin?${successData.ticketId}`)}`}
                               alt="QR Code"
-                              className="w-28 h-28"
+                              className="w-32 h-32"
                               referrerPolicy="no-referrer"
                             />
                           </div>
-                          <p className="text-xs font-black text-black tracking-widest mt-2 uppercase italic">
+                          <p className="text-sm font-black text-black tracking-widest mt-2.5 uppercase italic">
                             {successData.ticketId}
                           </p>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase mt-0.5 tracking-wider text-center">
+                          <p className="text-xs font-bold text-gray-400 uppercase mt-1 tracking-wider text-center leading-relaxed">
                             Đưa mã QR này cho Ban tổ chức<br/>để quét và nhận lượt quay thưởng!
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-3 p-3 bg-slate-50 border border-gray-200 text-center text-xs text-gray-600 leading-snug font-medium rounded-lg">
+                    <div className="mt-3 p-3.5 bg-slate-50 border border-gray-200 text-center text-xs sm:text-sm text-gray-600 leading-relaxed font-semibold rounded-xl">
                       📸 <b>Vui lòng chụp lại màn hình tấm vé này</b> để làm căn cứ nhận quà và đổi lượt chơi Minigame tại sự kiện!
                     </div>
 
@@ -806,9 +816,9 @@ export default function App() {
                         setSuccessData(null);
                         setIsDuplicate(false);
                       }}
-                      className="w-full mt-4 py-3 bg-black hover:bg-red-600 text-white font-black text-xs uppercase tracking-widest italic transition-colors cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full mt-4 py-4 bg-black hover:bg-red-600 text-white font-black text-sm uppercase tracking-widest italic transition-colors rounded-xl cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                     >
-                      <RefreshCw className="w-3 h-3" />
+                      <RefreshCw className="w-4 h-4" />
                       <span>ĐĂNG KÝ LƯỢT CHƠI MỚI</span>
                     </button>
                   </motion.div>
@@ -843,34 +853,35 @@ export default function App() {
                   <form onSubmit={handleVerifyPasscode} className="space-y-4">
                     <div className="space-y-1.5">
                       <label className="text-xs font-black tracking-widest text-slate-400 uppercase">
-                        MẬT KHẨU TRUY CẬP
+                        MẬT KHẨU TRUY CẬP (SỐ)
                       </label>
                       <input
-                        type="password"
+                        type="text"
                         inputMode="numeric"
                         pattern="[0-9]*"
                         placeholder="••••••••••••"
+                        style={{ WebkitTextSecurity: "disc" } as any}
                         value={adminPasscode}
                         onChange={(e) => {
                           setAdminPasscode(e.target.value.replace(/\D/g, ""));
                           setPasscodeError("");
                         }}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-base font-bold text-white tracking-widest placeholder:text-slate-700 focus:outline-none focus:border-red-500 transition-colors text-center"
+                        className="w-full bg-slate-950 border-2 border-slate-800 rounded-xl py-4 px-4 text-base sm:text-lg font-bold text-white tracking-widest placeholder:text-slate-800 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors text-center"
                         autoFocus
                       />
                     </div>
 
                     {passcodeError && (
-                      <div className="text-xs text-red-400 font-bold text-center bg-red-950/30 border border-red-900/50 py-2.5 px-3 rounded-lg">
+                      <div className="text-xs text-red-400 font-bold text-center bg-red-950/30 border border-red-900/50 py-3 px-3 rounded-xl">
                         {passcodeError}
                       </div>
                     )}
 
                     <button
                       type="submit"
-                      className="w-full py-3 bg-red-600 hover:bg-red-500 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest italic transition-all rounded-xl shadow-lg cursor-pointer flex items-center justify-center gap-1.5"
+                      className="w-full py-4 bg-red-600 hover:bg-red-500 active:scale-[0.98] text-white font-black text-sm uppercase tracking-widest italic transition-all rounded-xl shadow-lg cursor-pointer flex items-center justify-center gap-1.5"
                     >
-                      <ShieldCheck className="w-4 h-4" />
+                      <ShieldCheck className="w-5 h-5" />
                       XÁC NHẬN TRUY CẬP
                     </button>
                   </form>
@@ -925,37 +936,37 @@ export default function App() {
                 </div>
 
                 {/* Step Progress Bar */}
-                <div className="px-6 py-3.5 bg-slate-950 border-b border-slate-900 flex items-center justify-center gap-5 text-xs font-black">
+                <div className="px-4 sm:px-6 py-3.5 bg-slate-950 border-b border-slate-900 flex items-center justify-center gap-3 sm:gap-5 text-[11px] sm:text-xs font-black">
                   <div className={`flex items-center gap-1.5 ${!scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
-                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-xs ${!scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>1</span>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] sm:text-xs ${!scannedTicket ? 'bg-red-600 text-white animate-pulse font-extrabold' : 'bg-slate-800 text-slate-500'}`}>1</span>
                     <span className="uppercase tracking-widest">NHẬP / QUÉT VÉ</span>
                   </div>
-                  <div className="w-6 h-[1px] bg-slate-800" />
+                  <div className="w-5 h-[1px] bg-slate-800" />
                   <div className={`flex items-center gap-1.5 ${scannedTicket ? 'text-red-500' : 'text-slate-500'}`}>
-                    <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center text-xs ${scannedTicket ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-800 text-slate-500'}`}>2</span>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] sm:text-xs ${scannedTicket ? 'bg-red-600 text-white animate-pulse font-extrabold' : 'bg-slate-800 text-slate-500'}`}>2</span>
                     <span className="uppercase tracking-widest">CẬP NHẬT KẾT QUẢ</span>
                   </div>
                 </div>
 
             {/* Admin Body Area */}
-            <div className="flex-1 p-5 sm:p-6 space-y-6">
+            <div className="flex-1 p-4 sm:p-6 space-y-6">
               
               {/* QR Scanner Controls & Search Input */}
               {!scannedTicket && (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
                     1. TIẾP NHẬN THÔNG TIN VÉ
                   </p>
 
                   {/* Inline Camera stream or manual search option */}
-                  <div className="grid grid-cols-1 gap-3">
+                  <div className="flex flex-col gap-3.5">
                     
                     {isScanning ? (
                       <div className="relative border-2 border-dashed border-red-500 rounded-2xl overflow-hidden bg-black p-3 sm:p-4 flex flex-col items-center">
                         <div id="qr-reader" className="w-full max-w-[420px] overflow-hidden rounded-xl aspect-square shadow-2xl" />
                         <button
                           onClick={() => setIsScanning(false)}
-                          className="mt-3 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-black uppercase rounded-lg tracking-wider"
+                          className="mt-3 px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white text-xs font-black uppercase rounded-xl tracking-wider active:scale-95 transition-all"
                         >
                           HỦY QUÉT CAMERA
                         </button>
@@ -963,40 +974,40 @@ export default function App() {
                     ) : (
                       <button
                         onClick={() => setIsScanning(true)}
-                        className="w-full py-4 bg-red-600 hover:bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest italic transition-colors flex items-center justify-center gap-2 shadow-lg"
+                        className="w-full py-4 bg-red-600 hover:bg-red-500 active:scale-[0.98] text-white rounded-xl font-black text-sm uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-950/20"
                       >
-                        <Camera className="w-4 h-4 animate-bounce" />
+                        <Camera className="w-4.5 h-4.5 animate-bounce" />
                         MỞ CAMERA QUÉT MÃ QR VÉ
                       </button>
                     )}
 
                     {scannerError && (
-                      <div className="p-3 bg-red-950/40 border border-red-800 rounded-lg text-red-300 text-xs font-medium leading-relaxed">
+                      <div className="p-3 bg-red-950/40 border border-red-800 rounded-xl text-red-300 text-xs font-medium leading-relaxed">
                         {scannerError}
                       </div>
                     )}
 
                     {/* Manual input lookup */}
-                    <div className="relative">
+                    <div className="flex gap-2">
                       <input
                         type="text"
                         placeholder="Mã vé (VD: VM26-ABCDE)"
                         value={searchTicketId}
                         onChange={(e) => setSearchTicketId(e.target.value.toUpperCase())}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl py-3.5 pl-4 pr-12 text-base font-bold uppercase tracking-widest text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500 transition-colors"
+                        className="flex-1 bg-slate-950 border border-slate-700 rounded-xl py-3.5 px-4 text-base font-bold uppercase tracking-widest text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500 transition-colors"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") handleLookupTicket(searchTicketId);
                         }}
                       />
                       <button
                         onClick={() => handleLookupTicket(searchTicketId)}
-                        disabled={adminLoading}
-                        className="absolute inset-y-1.5 right-1.5 px-3 bg-slate-800 hover:bg-red-600 disabled:bg-slate-900 rounded-lg text-white font-bold text-xs transition-colors cursor-pointer"
+                        disabled={adminLoading || !searchTicketId.trim()}
+                        className="px-5 bg-slate-800 hover:bg-red-600 disabled:bg-slate-950 disabled:text-slate-800 disabled:border-slate-800 border border-transparent rounded-xl text-white font-black text-sm transition-all cursor-pointer flex items-center justify-center active:scale-[0.98]"
                       >
                         {adminLoading ? (
-                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          <RefreshCw className="w-5 h-5 animate-spin" />
                         ) : (
-                          <Search className="w-3.5 h-3.5" />
+                          <Search className="w-5 h-5" />
                         )}
                       </button>
                     </div>
@@ -1094,14 +1105,14 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="flex flex-col gap-2.5">
+                      <div className="flex flex-col gap-3">
                         {/* Game 1 */}
                         <label 
                           id="admin-game-1-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGame1 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1112,24 +1123,26 @@ export default function App() {
                               setAdminGame1(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_1</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Bắt gậy</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGame1 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GAME 1</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGame1 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGame1 ? "✓ ĐÃ HOÀN THÀNH" : "○ CHƯA CHƠI"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">Bắt gậy</p>
                           </div>
                         </label>
 
                         {/* Game 2 */}
                         <label 
                           id="admin-game-2-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGame2 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1140,24 +1153,26 @@ export default function App() {
                               setAdminGame2(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_2</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Sàng bóng xuống lỗ</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGame2 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GAME 2</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGame2 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGame2 ? "✓ ĐÃ HOÀN THÀNH" : "○ CHƯA CHƠI"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">Sàng bóng xuống lỗ</p>
                           </div>
                         </label>
 
                         {/* Game 3 */}
                         <label 
                           id="admin-game-3-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGame3 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1168,24 +1183,26 @@ export default function App() {
                               setAdminGame3(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_3</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">PickleBall</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGame3 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GAME 3</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGame3 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGame3 ? "✓ ĐÃ HOÀN THÀNH" : "○ CHƯA CHƠI"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">PickleBall</p>
                           </div>
                         </label>
 
                         {/* Game 4 */}
                         <label 
                           id="admin-game-4-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGame4 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1196,14 +1213,16 @@ export default function App() {
                               setAdminGame4(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GAME_4</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Vòng tròn về đích</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGame4 ? "✓ Đã hoàn thành" : "○ Chưa hoàn thành"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GAME 4</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGame4 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGame4 ? "✓ ĐÃ HOÀN THÀNH" : "○ CHƯA CHƠI"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">Vòng tròn về đích</p>
                           </div>
                         </label>
                       </div>
@@ -1220,14 +1239,14 @@ export default function App() {
                         </p>
                       </div>
 
-                      <div className="flex flex-col gap-2.5">
+                      <div className="flex flex-col gap-3">
                         {/* Gift 1: Gang tay */}
                         <label 
                           id="admin-gift-1-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGift1 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1238,24 +1257,26 @@ export default function App() {
                               setAdminGift1(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GIFT_1</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Gang tay</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGift1 ? "✓ Đã trao" : "○ Chưa trao"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GIFT 1</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGift1 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGift1 ? "✓ ĐÃ TRAO" : "○ CHƯA TRAO"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">Găng tay</p>
                           </div>
                         </label>
 
                         {/* Gift 2: Khăn ống */}
                         <label 
                           id="admin-gift-2-container"
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none ${
+                          className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer select-none active:scale-[0.99] ${
                             adminGift2 
-                              ? "bg-red-950/20 border-red-600/80 text-white" 
-                              : "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-red-950/30 border-red-600 text-white shadow-md shadow-red-950/10" 
+                              : "bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                           }`}
                         >
                           <input
@@ -1266,14 +1287,16 @@ export default function App() {
                               setAdminGift2(e.target.checked);
                               setSyncSuccess(false);
                             }}
-                            className="mt-1 h-3.5 w-3.5 accent-red-600 rounded cursor-pointer border-slate-700 bg-slate-950"
+                            className="h-6 w-6 accent-red-600 rounded-lg cursor-pointer border-slate-700 bg-slate-950 shrink-0"
                           />
-                          <div>
-                            <p className="text-[11px] font-black uppercase tracking-wider text-red-500">GIFT_2</p>
-                            <p className="text-xs font-extrabold text-white mt-0.5 leading-tight">Khăn ống</p>
-                            <p className="text-[10px] font-medium opacity-60 mt-0.5">
-                              {adminGift2 ? "✓ Đã trao" : "○ Chưa trao"}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">GIFT 2</p>
+                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${adminGift2 ? 'bg-red-950 text-red-400' : 'bg-slate-800 text-slate-500'}`}>
+                                {adminGift2 ? "✓ ĐÃ TRAO" : "○ CHƯA TRAO"}
+                              </span>
+                            </div>
+                            <p className="text-sm font-black text-white mt-0.5 leading-tight truncate">Khăn ống</p>
                           </div>
                         </label>
                       </div>
@@ -1294,9 +1317,9 @@ export default function App() {
                               setAdminError(null);
                               setIsScanning(false);
                             }}
-                            className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-emerald-950/20"
+                            className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-emerald-950/20 active:scale-98"
                           >
-                            <QrCode className="w-4 h-4" />
+                            <QrCode className="w-5 h-5" />
                             <span>QUÉT NGƯỜI TIẾP THEO</span>
                           </button>
                         </div>
@@ -1306,16 +1329,16 @@ export default function App() {
                             onClick={handleSubmitAdmin}
                             disabled={syncingAdmin}
                             id="btn-admin-submit"
-                            className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-black text-xs uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-red-950/20"
+                            className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:bg-slate-900 disabled:text-slate-600 text-white font-black text-sm uppercase tracking-widest italic transition-all flex items-center justify-center gap-2 rounded-xl cursor-pointer shadow-lg shadow-red-950/20 active:scale-98"
                           >
                             {syncingAdmin ? (
                               <>
-                                <RefreshCw className="w-4 h-4 animate-spin" />
-                                <span>ĐANG CẬP NHẬT...</span>
+                                <RefreshCw className="w-5 h-5 animate-spin" />
+                                <span>ĐANG CẬP NHẬT KẾT QUẢ...</span>
                               </>
                             ) : (
                               <>
-                                <CheckSquare className="w-4 h-4" />
+                                <CheckSquare className="w-5 h-5" />
                                 <span>CẬP NHẬT KẾT QUẢ</span>
                               </>
                             )}
@@ -1330,9 +1353,9 @@ export default function App() {
                               setIsScanning(false);
                             }}
                             disabled={syncingAdmin}
-                            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 border border-slate-800/80"
+                            className="w-full py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-slate-400 font-bold text-sm uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 border border-slate-800/80 active:scale-98"
                           >
-                            <XCircle className="w-3.5 h-3.5" />
+                            <XCircle className="w-4.5 h-4.5" />
                             <span>HỦY & CHỌN NGƯỜI KHÁC</span>
                           </button>
                         </div>
