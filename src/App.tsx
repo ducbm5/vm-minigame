@@ -466,7 +466,7 @@ export default function App() {
       setFormTouched({ name: false, phone: false });
     } catch (err: any) {
       console.error("Google Sheets Submission Error:", err);
-      setErrorMsg("Không thể đồng bộ dữ liệu với Google Sheet. Vui lòng kiểm tra lại cấu hình Script.");
+      setErrorMsg("Không thể lưu thông tin. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -549,7 +549,7 @@ export default function App() {
       }, 3500);
     } catch (err) {
       console.error("Failed to update status on Sheet:", err);
-      alert("Lỗi đồng bộ lên Google Sheets. Vui lòng thực hiện lại.");
+      alert("Lỗi cập nhật kết quả. Vui lòng thực hiện lại.");
     } finally {
       setSyncingAdmin(false);
     }
@@ -847,10 +847,12 @@ export default function App() {
                       </label>
                       <input
                         type="password"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="••••••••••••"
                         value={adminPasscode}
                         onChange={(e) => {
-                          setAdminPasscode(e.target.value);
+                          setAdminPasscode(e.target.value.replace(/\D/g, ""));
                           setPasscodeError("");
                         }}
                         className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs font-bold text-white tracking-widest placeholder:text-slate-700 focus:outline-none focus:border-red-500 transition-colors text-center"
@@ -918,7 +920,7 @@ export default function App() {
                     MINIGAME CHECK-IN
                   </h2>
                   <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
-                    Quét mã QR và xác nhận quà tặng của vận động viên trực tiếp lên Google Sheets
+                    Quét mã QR và xác nhận quà tặng của vận động viên
                   </p>
                 </div>
 
@@ -1273,17 +1275,17 @@ export default function App() {
                         {syncingAdmin ? (
                           <>
                             <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>ĐANG LƯU & ĐỒNG BỘ LÊN SHEET...</span>
+                            <span>ĐANG CẬP NHẬT...</span>
                           </>
                         ) : syncSuccess ? (
                           <>
                             <Check className="w-4 h-4" />
-                            <span>LƯU THÀNH CÔNG! ĐÃ ĐỒNG BỘ</span>
+                            <span>CẬP NHẬT THÀNH CÔNG!</span>
                           </>
                         ) : (
                           <>
                             <CheckSquare className="w-4 h-4" />
-                            <span>CẬP NHẬT KẾT QUẢ & LƯU SHEET</span>
+                            <span>CẬP NHẬT KẾT QUẢ</span>
                           </>
                         )}
                       </button>
@@ -1291,7 +1293,7 @@ export default function App() {
                       {/* Success Hint */}
                       {syncSuccess && (
                         <p className="text-[9px] text-emerald-400 font-black text-center mt-2.5 uppercase tracking-wider animate-bounce">
-                          🎉 Dữ liệu đã được lưu thành công vào Google Sheet (Cột A - J)
+                          🎉 Cập nhật kết quả thành công!
                         </p>
                       )}
                     </div>
