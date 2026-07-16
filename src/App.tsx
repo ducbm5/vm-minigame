@@ -18,7 +18,8 @@ import {
   ArrowLeft,
   CheckSquare,
   Award,
-  Lock
+  Lock,
+  Settings
 } from "lucide-react";
 import { Html5Qrcode } from "html5-qrcode";
 
@@ -114,6 +115,14 @@ export default function App() {
   const [adminGift2, setAdminGift2] = useState(false);
   const [syncingAdmin, setSyncingAdmin] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
+
+  // Google Apps Script URL configuration state
+  const [scriptUrl, setScriptUrl] = useState(() => {
+    return localStorage.getItem("admin_script_url") || ADMIN_SCRIPT_URL;
+  });
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [editScriptUrl, setEditScriptUrl] = useState("");
+  const [settingsSaveSuccess, setSettingsSaveSuccess] = useState(false);
 
   // Sync state variables with current scannedTicket data
   useEffect(() => {
@@ -282,7 +291,7 @@ export default function App() {
     
     // Attempt Real-time lookup through Google Apps Script API (Bypasses caching and secure)
     try {
-      const response = await fetch(`${ADMIN_SCRIPT_URL}?action=checkPhone&phone=${encodeURIComponent(corePhone)}`);
+      const response = await fetch(`${scriptUrl}?action=checkPhone&phone=${encodeURIComponent(corePhone)}`);
       if (response.ok) {
         const result = await response.json();
         if (result && result.success && result.exists && result.data) {
@@ -319,7 +328,7 @@ export default function App() {
 
     // Try real-time API
     try {
-      const response = await fetch(`${ADMIN_SCRIPT_URL}?action=get&id=${encodeURIComponent(formattedId)}`);
+      const response = await fetch(`${scriptUrl}?action=get&id=${encodeURIComponent(formattedId)}`);
       if (response.ok) {
         const res = await response.json();
         if (res && res.success && res.data) {
@@ -415,7 +424,7 @@ export default function App() {
 
       try {
         // Try standard CORS POST first so we can read the server's response if it detects duplicate
-        const response = await fetch(ADMIN_SCRIPT_URL, {
+        const response = await fetch(scriptUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -444,7 +453,7 @@ export default function App() {
       } catch (corsErr) {
         console.warn("CORS/Fetch POST error, performing transparent fallback:", corsErr);
         // Fallback: Send with mode: "no-cors" to guarantee the registration is sent to Google Sheets
-        await fetch(ADMIN_SCRIPT_URL, {
+        await fetch(scriptUrl, {
           method: "POST",
           mode: "no-cors",
           headers: {
@@ -521,7 +530,7 @@ export default function App() {
       updatePayload.append("gift2", gift2Str);
       updatePayload.append("timestamp", updateTimeStr);
 
-      await fetch(ADMIN_SCRIPT_URL, {
+      await fetch(scriptUrl, {
         method: "POST",
         mode: "no-cors",
         headers: {
@@ -920,6 +929,17 @@ export default function App() {
                       </span>
                       <button
                         onClick={() => {
+                          setEditScriptUrl(scriptUrl);
+                          setIsSettingsOpen(!isSettingsOpen);
+                          setSettingsSaveSuccess(false);
+                        }}
+                        title="Cấu hình Google Apps Script"
+                        className={`p-1.5 rounded transition-colors cursor-pointer ${isSettingsOpen ? 'bg-red-600 text-white' : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white'}`}
+                      >
+                        <Settings className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => {
                           setIsAdminAuthenticated(false);
                           sessionStorage.removeItem("admin_auth");
                           setAdminPasscode("");
@@ -927,7 +947,7 @@ export default function App() {
                         title="Đăng xuất"
                         className="p-1.5 bg-slate-800 hover:bg-red-600 rounded text-slate-400 hover:text-white transition-colors cursor-pointer"
                       >
-                        <Lock className="w-3 h-3" />
+                        <Lock className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -954,9 +974,85 @@ export default function App() {
 
             {/* Admin Body Area */}
             <div className="flex-1 p-4 sm:p-6 space-y-6">
-              
-              {/* QR Scanner Controls & Search Input */}
-              {!scannedTicket && (
+              {isSettingsOpen ? (
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                      <Settings className="w-4 h-4 text-red-500" />
+                      CẤU HÌNH HỆ THỐNG
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Cập nhật các thông số vận hành của hệ thống check-in mà không thay đổi mã nguồn.
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+                    <div className="space-y-2">
+                      <label className="block text-xs font-black text-slate-300 uppercase tracking-wider">
+                        ĐƯỜNG DẪN GOOGLE APPS SCRIPT WEB APP
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={editScriptUrl}
+                        onChange={(e) => setEditScriptUrl(e.target.value)}
+                        placeholder="https://script.google.com/macros/s/.../exec"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs font-mono text-slate-300 focus:outline-none focus:border-red-500 transition-colors"
+                      />
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        ⚠️ **Lưu ý:** Vui lòng nhập đúng URL dạng <code className="font-mono bg-slate-950 text-red-400 px-1 py-0.5 rounded">/macros/s/.../exec</code> của Google Web App đã deploy với phân quyền truy cập <strong className="text-slate-400">"Anyone"</strong>. Không được thay đổi cấu trúc sheet hay tham số truyền nhận của API.
+                      </p>
+                    </div>
+
+                    {settingsSaveSuccess && (
+                      <div className="text-xs text-emerald-400 font-bold bg-emerald-950/30 border border-emerald-900/50 py-3 px-4 rounded-xl text-center">
+                        ✓ Lưu cấu hình thành công! Hệ thống đang sử dụng API mới.
+                      </div>
+                    )}
+
+                    <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => {
+                          const cleanedUrl = editScriptUrl.trim();
+                          if (!cleanedUrl) return;
+                          localStorage.setItem("admin_script_url", cleanedUrl);
+                          setScriptUrl(cleanedUrl);
+                          setSettingsSaveSuccess(true);
+                          setTimeout(() => setSettingsSaveSuccess(false), 3000);
+                        }}
+                        className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-widest italic rounded-xl transition-all cursor-pointer text-center active:scale-95 flex items-center justify-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        LƯU CẤU HÌNH
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          if (window.confirm("Bạn có chắc chắn muốn khôi phục về đường dẫn mặc định ban đầu?")) {
+                            localStorage.removeItem("admin_script_url");
+                            setScriptUrl(ADMIN_SCRIPT_URL);
+                            setEditScriptUrl(ADMIN_SCRIPT_URL);
+                            setSettingsSaveSuccess(true);
+                            setTimeout(() => setSettingsSaveSuccess(false), 3000);
+                          }
+                        }}
+                        className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer text-center"
+                      >
+                        MẶC ĐỊNH
+                      </button>
+
+                      <button
+                        onClick={() => setIsSettingsOpen(false)}
+                        className="py-3 px-4 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
+                      >
+                        QUAY LẠI
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* QR Scanner Controls & Search Input */}
+                  {!scannedTicket && (
                 <div className="space-y-4">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
                     1. TIẾP NHẬN THÔNG TIN VÉ
@@ -1377,7 +1473,8 @@ export default function App() {
 
                 </div>
               )}
-
+                </>
+              )}
             </div>
             </>
             )}
