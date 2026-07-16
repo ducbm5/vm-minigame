@@ -19,7 +19,9 @@ import {
   CheckSquare,
   Award,
   Lock,
-  Settings
+  Settings,
+  Copy,
+  Share2
 } from "lucide-react";
 import { Html5Qrcode } from "html5-qrcode";
 
@@ -119,11 +121,41 @@ export default function App() {
 
   // Google Apps Script URL configuration state
   const [scriptUrl, setScriptUrl] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const sParam = params.get("s");
+      if (sParam === "1") {
+        localStorage.setItem("admin_script_url", ADMIN_SCRIPT_URL);
+        return ADMIN_SCRIPT_URL;
+      } else if (sParam === "2") {
+        localStorage.setItem("admin_script_url", BACKUP_SCRIPT_URL);
+        return BACKUP_SCRIPT_URL;
+      }
+    } catch (e) {
+      console.error("Error parsing script parameter from URL:", e);
+    }
     return localStorage.getItem("admin_script_url") || ADMIN_SCRIPT_URL;
   });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editScriptUrl, setEditScriptUrl] = useState("");
   const [settingsSaveSuccess, setSettingsSaveSuccess] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const handleCopySyncLink = () => {
+    const sVal = scriptUrl === BACKUP_SCRIPT_URL ? "2" : "1";
+    const baseUrl = window.location.origin + window.location.pathname;
+    // Keep standard /admin or whatever pathname they are currently on
+    const syncUrl = `${baseUrl}?s=${sVal}`;
+    
+    navigator.clipboard.writeText(syncUrl)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 3000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy URL:", err);
+      });
+  };
 
   // Sync state variables with current scannedTicket data
   useEffect(() => {
@@ -1048,6 +1080,25 @@ export default function App() {
                       <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
                         💡 **Gợi ý:** Nếu gặp lỗi kết nối hoặc giới hạn lượt gọi (Quotas) trên đường dẫn gốc, hãy chuyển sang đường dẫn dự phòng (Backup) để tiếp tục vận hành bình thường.
                       </p>
+                    </div>
+
+                    <div className="border-t border-slate-800/60 pt-4 space-y-2">
+                      <label className="block text-xs font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <Share2 className="w-3.5 h-3.5 text-red-500" />
+                        ĐỒNG BỘ THIẾT BỊ KHÁC
+                      </label>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        Để toàn bộ nhân viên/máy quét dùng chung cấu hình này mà không cần chỉnh cài đặt thủ công, hãy sao chép liên kết đồng bộ dưới đây và chia sẻ qua Zalo/Messenger. Khi họ truy cập liên kết, hệ thống sẽ tự động cấu hình theo script tương ứng.
+                      </p>
+                      
+                      <button
+                        type="button"
+                        onClick={handleCopySyncLink}
+                        className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-black text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        {copySuccess ? "ĐÃ SAO CHÉP LIÊN KẾT ĐỒNG BỘ!" : "SAO CHÉP LIÊN KẾT ĐỒNG BỘ"}
+                      </button>
                     </div>
 
                     {settingsSaveSuccess && (
