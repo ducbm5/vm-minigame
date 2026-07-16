@@ -141,6 +141,11 @@ export default function App() {
   const [settingsSaveSuccess, setSettingsSaveSuccess] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
+  // Settings authentication states (Passcode: 5)
+  const [isSettingsAuthorized, setIsSettingsAuthorized] = useState(false);
+  const [settingsPasscode, setSettingsPasscode] = useState("");
+  const [settingsPasscodeError, setSettingsPasscodeError] = useState("");
+
   const handleCopySyncLink = () => {
     const sVal = scriptUrl === BACKUP_SCRIPT_URL ? "2" : "1";
     const baseUrl = window.location.origin + window.location.pathname;
@@ -962,6 +967,11 @@ export default function App() {
                       </span>
                       <button
                         onClick={() => {
+                          if (!isSettingsOpen) {
+                            setIsSettingsAuthorized(false);
+                            setSettingsPasscode("");
+                            setSettingsPasscodeError("");
+                          }
                           setEditScriptUrl(scriptUrl);
                           setIsSettingsOpen(!isSettingsOpen);
                           setSettingsSaveSuccess(false);
@@ -1008,130 +1018,197 @@ export default function App() {
             {/* Admin Body Area */}
             <div className="flex-1 p-4 sm:p-6 space-y-6">
               {isSettingsOpen ? (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                      <Settings className="w-4 h-4 text-red-500" />
-                      CẤU HÌNH HỆ THỐNG
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Chọn cấu hình đường dẫn API Google Apps Script phù hợp để vận hành.
-                    </p>
-                  </div>
-
-                  <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
-                    <div className="space-y-3">
-                      <label className="block text-xs font-black text-slate-300 uppercase tracking-wider">
-                        CHỌN ĐƯỜNG DẪN GOOGLE APPS SCRIPT
-                      </label>
-                      
-                      <div className="space-y-3">
-                        {/* Option 1: Link gốc */}
-                        <button
-                          type="button"
-                          onClick={() => setEditScriptUrl(ADMIN_SCRIPT_URL)}
-                          className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
-                            editScriptUrl === ADMIN_SCRIPT_URL
-                              ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
-                              : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full">
-                            <span className="text-xs font-black text-white uppercase tracking-wider">
-                              Link Script 1: Link gốc (Mặc định)
-                            </span>
-                            {editScriptUrl === ADMIN_SCRIPT_URL && (
-                              <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
-                                Đang chọn
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
-                            {ADMIN_SCRIPT_URL}
-                          </span>
-                        </button>
-
-                        {/* Option 2: Link backup */}
-                        <button
-                          type="button"
-                          onClick={() => setEditScriptUrl(BACKUP_SCRIPT_URL)}
-                          className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
-                            editScriptUrl === BACKUP_SCRIPT_URL
-                              ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
-                              : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full">
-                            <span className="text-xs font-black text-white uppercase tracking-wider">
-                              Link Script 2: Link backup
-                            </span>
-                            {editScriptUrl === BACKUP_SCRIPT_URL && (
-                              <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
-                                Đang chọn
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
-                            {BACKUP_SCRIPT_URL}
-                          </span>
-                        </button>
-                      </div>
-
-                      <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
-                        💡 **Gợi ý:** Nếu gặp lỗi kết nối hoặc giới hạn lượt gọi (Quotas) trên đường dẫn gốc, hãy chuyển sang đường dẫn dự phòng (Backup) để tiếp tục vận hành bình thường.
+                !isSettingsAuthorized ? (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <Settings className="w-4 h-4 text-red-500" />
+                        XÁC THỰC CẤU HÌNH
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Vui lòng nhập mã bảo mật cấu hình để tiếp tục chỉnh sửa cài đặt.
                       </p>
                     </div>
 
-                    <div className="border-t border-slate-800/60 pt-4 space-y-2">
-                      <label className="block text-xs font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <Share2 className="w-3.5 h-3.5 text-red-500" />
-                        ĐỒNG BỘ THIẾT BỊ KHÁC
-                      </label>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        Để toàn bộ nhân viên/máy quét dùng chung cấu hình này mà không cần chỉnh cài đặt thủ công, hãy sao chép liên kết đồng bộ dưới đây và chia sẻ qua Zalo/Messenger. Khi họ truy cập liên kết, hệ thống sẽ tự động cấu hình theo script tương ứng.
-                      </p>
-                      
-                      <button
-                        type="button"
-                        onClick={handleCopySyncLink}
-                        className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-black text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-2 active:scale-98"
-                      >
-                        <Copy className="w-3.5 h-3.5" />
-                        {copySuccess ? "ĐÃ SAO CHÉP LIÊN KẾT ĐỒNG BỘ!" : "SAO CHÉP LIÊN KẾT ĐỒNG BỘ"}
-                      </button>
-                    </div>
-
-                    {settingsSaveSuccess && (
-                      <div className="text-xs text-emerald-400 font-bold bg-emerald-950/30 border border-emerald-900/50 py-3 px-4 rounded-xl text-center">
-                        ✓ Lưu cấu hình thành công! Hệ thống đã chuyển sang API được chọn.
-                      </div>
-                    )}
-
-                    <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                      <button
-                        onClick={() => {
-                          const cleanedUrl = editScriptUrl.trim();
-                          if (!cleanedUrl) return;
-                          localStorage.setItem("admin_script_url", cleanedUrl);
-                          setScriptUrl(cleanedUrl);
-                          setSettingsSaveSuccess(true);
-                          setTimeout(() => setSettingsSaveSuccess(false), 3000);
+                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4 max-w-sm mx-auto shadow-xl">
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (settingsPasscode === "5") {
+                            setIsSettingsAuthorized(true);
+                            setSettingsPasscodeError("");
+                          } else {
+                            setSettingsPasscodeError("Mã bảo mật không chính xác!");
+                          }
                         }}
-                        className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-widest italic rounded-xl transition-all cursor-pointer text-center active:scale-95 flex items-center justify-center gap-2"
+                        className="space-y-4"
                       >
-                        <Check className="w-4 h-4" />
-                        LƯU CẤU HÌNH
-                      </button>
+                        <div className="space-y-2">
+                          <label className="block text-xs font-black text-slate-300 uppercase tracking-wider text-center">
+                            MÃ BẢO MẬT (PASSCODE)
+                          </label>
+                          <input
+                            type="password"
+                            placeholder="Nhập mã bảo mật..."
+                            value={settingsPasscode}
+                            onChange={(e) => {
+                              setSettingsPasscode(e.target.value);
+                              if (settingsPasscodeError) setSettingsPasscodeError("");
+                            }}
+                            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-center font-bold text-lg text-slate-100 focus:outline-none focus:border-red-500 transition-colors"
+                            autoFocus
+                          />
+                          {settingsPasscodeError && (
+                            <p className="text-xs text-red-500 text-center font-bold mt-1">
+                              {settingsPasscodeError}
+                            </p>
+                          )}
+                        </div>
 
-                      <button
-                        onClick={() => setIsSettingsOpen(false)}
-                        className="py-3 px-6 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
-                      >
-                        QUAY LẠI
-                      </button>
+                        <div className="flex gap-3 pt-2">
+                          <button
+                            type="submit"
+                            className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-widest italic rounded-xl transition-all cursor-pointer text-center active:scale-95 flex items-center justify-center gap-2"
+                          >
+                            XÁC NHẬN
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setIsSettingsOpen(false)}
+                            className="py-3 px-6 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
+                          >
+                            HỦY
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <Settings className="w-4 h-4 text-red-500" />
+                        CẤU HÌNH HỆ THỐNG
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Chọn cấu hình đường dẫn API Google Apps Script phù hợp để vận hành.
+                      </p>
+                    </div>
+
+                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+                      <div className="space-y-3">
+                        <label className="block text-xs font-black text-slate-300 uppercase tracking-wider">
+                          CHỌN ĐƯỜNG DẪN GOOGLE APPS SCRIPT
+                        </label>
+                        
+                        <div className="space-y-3">
+                          {/* Option 1: Link gốc */}
+                          <button
+                            type="button"
+                            onClick={() => setEditScriptUrl(ADMIN_SCRIPT_URL)}
+                            className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
+                              editScriptUrl === ADMIN_SCRIPT_URL
+                                ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                                : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span className="text-xs font-black text-white uppercase tracking-wider">
+                                Link Script 1: Link gốc (Mặc định)
+                              </span>
+                              {editScriptUrl === ADMIN_SCRIPT_URL && (
+                                <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
+                                  Đang chọn
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
+                              {ADMIN_SCRIPT_URL}
+                            </span>
+                          </button>
+
+                          {/* Option 2: Link backup */}
+                          <button
+                            type="button"
+                            onClick={() => setEditScriptUrl(BACKUP_SCRIPT_URL)}
+                            className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
+                              editScriptUrl === BACKUP_SCRIPT_URL
+                                ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                                : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span className="text-xs font-black text-white uppercase tracking-wider">
+                                Link Script 2: Link backup
+                              </span>
+                              {editScriptUrl === BACKUP_SCRIPT_URL && (
+                                <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
+                                  Đang chọn
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
+                              {BACKUP_SCRIPT_URL}
+                            </span>
+                          </button>
+                        </div>
+
+                        <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
+                          💡 **Gợi ý:** Nếu gặp lỗi kết nối hoặc giới hạn lượt gọi (Quotas) trên đường dẫn gốc, hãy chuyển sang đường dẫn dự phòng (Backup) để tiếp tục vận hành bình thường.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-slate-800/60 pt-4 space-y-2">
+                        <label className="block text-xs font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                          <Share2 className="w-3.5 h-3.5 text-red-500" />
+                          ĐỒNG BỘ THIẾT BỊ KHÁC
+                        </label>
+                        <p className="text-[11px] text-slate-500 leading-relaxed">
+                          Để toàn bộ nhân viên/máy quét dùng chung cấu hình này mà không cần chỉnh cài đặt thủ công, hãy sao chép liên kết đồng bộ dưới đây và chia sẻ qua Zalo/Messenger. Khi họ truy cập liên kết, hệ thống sẽ tự động cấu hình theo script tương ứng.
+                        </p>
+                        
+                        <button
+                          type="button"
+                          onClick={handleCopySyncLink}
+                          className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-black text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          {copySuccess ? "ĐÃ SAO CHÉP LIÊN KẾT ĐỒNG BỘ!" : "SAO CHÉP LIÊN KẾT ĐỒNG BỘ"}
+                        </button>
+                      </div>
+
+                      {settingsSaveSuccess && (
+                        <div className="text-xs text-emerald-400 font-bold bg-emerald-950/30 border border-emerald-900/50 py-3 px-4 rounded-xl text-center">
+                          ✓ Lưu cấu hình thành công! Hệ thống đã chuyển sang API được chọn.
+                        </div>
+                      )}
+
+                      <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                        <button
+                          onClick={() => {
+                            const cleanedUrl = editScriptUrl.trim();
+                            if (!cleanedUrl) return;
+                            localStorage.setItem("admin_script_url", cleanedUrl);
+                            setScriptUrl(cleanedUrl);
+                            setSettingsSaveSuccess(true);
+                            setTimeout(() => setSettingsSaveSuccess(false), 3000);
+                          }}
+                          className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-widest italic rounded-xl transition-all cursor-pointer text-center active:scale-95 flex items-center justify-center gap-2"
+                        >
+                          <Check className="w-4 h-4" />
+                          LƯU CẤU HÌNH
+                        </button>
+
+                        <button
+                          onClick={() => setIsSettingsOpen(false)}
+                          className="py-3 px-6 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
+                        >
+                          QUAY LẠI
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )
               ) : (
                 <>
                   {/* QR Scanner Controls & Search Input */}
