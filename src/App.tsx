@@ -24,6 +24,7 @@ import {
 import { Html5Qrcode } from "html5-qrcode";
 
 const ADMIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7l25leDtFU8WYmwWE_fl_t0bNyAXLwC2aR3O3frU5-NITLDj7kO3BGUguQ9QC0M8/exec";
+const BACKUP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7atIoUQzZt8DaZgpxIu5Iw0Lo8bC2prA97P2n14d3dAEXy6G7T5-TCWICjTH1XzEbnA/exec";
 
 // Official Sponsorship prizes
 const PRIZES = [
@@ -982,30 +983,76 @@ export default function App() {
                       CẤU HÌNH HỆ THỐNG
                     </h3>
                     <p className="text-xs text-slate-500 mt-1">
-                      Cập nhật các thông số vận hành của hệ thống check-in mà không thay đổi mã nguồn.
+                      Chọn cấu hình đường dẫn API Google Apps Script phù hợp để vận hành.
                     </p>
                   </div>
 
                   <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <label className="block text-xs font-black text-slate-300 uppercase tracking-wider">
-                        ĐƯỜNG DẪN GOOGLE APPS SCRIPT WEB APP
+                        CHỌN ĐƯỜNG DẪN GOOGLE APPS SCRIPT
                       </label>
-                      <textarea
-                        rows={3}
-                        value={editScriptUrl}
-                        onChange={(e) => setEditScriptUrl(e.target.value)}
-                        placeholder="https://script.google.com/macros/s/.../exec"
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs font-mono text-slate-300 focus:outline-none focus:border-red-500 transition-colors"
-                      />
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        ⚠️ **Lưu ý:** Vui lòng nhập đúng URL dạng <code className="font-mono bg-slate-950 text-red-400 px-1 py-0.5 rounded">/macros/s/.../exec</code> của Google Web App đã deploy với phân quyền truy cập <strong className="text-slate-400">"Anyone"</strong>. Không được thay đổi cấu trúc sheet hay tham số truyền nhận của API.
+                      
+                      <div className="space-y-3">
+                        {/* Option 1: Link gốc */}
+                        <button
+                          type="button"
+                          onClick={() => setEditScriptUrl(ADMIN_SCRIPT_URL)}
+                          className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
+                            editScriptUrl === ADMIN_SCRIPT_URL
+                              ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                              : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="text-xs font-black text-white uppercase tracking-wider">
+                              Link Script 1: Link gốc (Mặc định)
+                            </span>
+                            {editScriptUrl === ADMIN_SCRIPT_URL && (
+                              <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
+                                Đang chọn
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
+                            {ADMIN_SCRIPT_URL}
+                          </span>
+                        </button>
+
+                        {/* Option 2: Link backup */}
+                        <button
+                          type="button"
+                          onClick={() => setEditScriptUrl(BACKUP_SCRIPT_URL)}
+                          className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
+                            editScriptUrl === BACKUP_SCRIPT_URL
+                              ? "bg-slate-950 border-red-600 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                              : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="text-xs font-black text-white uppercase tracking-wider">
+                              Link Script 2: Link backup
+                            </span>
+                            {editScriptUrl === BACKUP_SCRIPT_URL && (
+                              <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
+                                Đang chọn
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[10px] font-mono text-slate-400 break-all leading-normal bg-slate-950 p-2 rounded border border-slate-900 w-full block">
+                            {BACKUP_SCRIPT_URL}
+                          </span>
+                        </button>
+                      </div>
+
+                      <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
+                        💡 **Gợi ý:** Nếu gặp lỗi kết nối hoặc giới hạn lượt gọi (Quotas) trên đường dẫn gốc, hãy chuyển sang đường dẫn dự phòng (Backup) để tiếp tục vận hành bình thường.
                       </p>
                     </div>
 
                     {settingsSaveSuccess && (
                       <div className="text-xs text-emerald-400 font-bold bg-emerald-950/30 border border-emerald-900/50 py-3 px-4 rounded-xl text-center">
-                        ✓ Lưu cấu hình thành công! Hệ thống đang sử dụng API mới.
+                        ✓ Lưu cấu hình thành công! Hệ thống đã chuyển sang API được chọn.
                       </div>
                     )}
 
@@ -1026,23 +1073,8 @@ export default function App() {
                       </button>
 
                       <button
-                        onClick={() => {
-                          if (window.confirm("Bạn có chắc chắn muốn khôi phục về đường dẫn mặc định ban đầu?")) {
-                            localStorage.removeItem("admin_script_url");
-                            setScriptUrl(ADMIN_SCRIPT_URL);
-                            setEditScriptUrl(ADMIN_SCRIPT_URL);
-                            setSettingsSaveSuccess(true);
-                            setTimeout(() => setSettingsSaveSuccess(false), 3000);
-                          }
-                        }}
-                        className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer text-center"
-                      >
-                        MẶC ĐỊNH
-                      </button>
-
-                      <button
                         onClick={() => setIsSettingsOpen(false)}
-                        className="py-3 px-4 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
+                        className="py-3 px-6 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
                       >
                         QUAY LẠI
                       </button>
